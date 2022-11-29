@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">s216247 Lykkehjulet</string>
+    <string name="score">Score: %d</string>
+    <string name="currentWord">Current Word: %s</string>
+    <string name="currentCategory">Current Category: %s</string>
+    <string name="currentLives">Lives: %d</string>
+    <string name="lykkehjul">Spinned value: %s</string>
+    <string name="start">Start</string>
+    <string name="wrong_guess">Wrong Guess</string>
+    <string name="enter_your_guess">Enter Your Guess</string>
 </resources>
