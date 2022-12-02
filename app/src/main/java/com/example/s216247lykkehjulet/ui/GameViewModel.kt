@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
+// Some code is taken from a previous exercise that was called Unscramble
+// that helped making this assignment
 class GameViewModel : ViewModel() {
     // Game UI state
     private val _uiState = MutableStateFlow(GameUiState())
