@@ -137,6 +137,7 @@ class GameViewModel : ViewModel() {
                 // User's guess is correct, increase the score
                 val updatedScore = _uiState.value.score.plus(_uiState.value.lykkehjulValue.toInt() * occurences)
                 updateGameState(updatedScore,uiState.value.lives)
+
                 if (uiState.value.usedLetters.contains(currentWord, ignoreCase = true))
                 {
                     _uiState.update { currentState -> currentState.copy(usedLetters = uiState.value.usedLetters) }
@@ -145,6 +146,10 @@ class GameViewModel : ViewModel() {
                 _uiState.update { currentState -> currentState.copy(usedLetters = _uiState.value.usedLetters.plus(userGuess)) }
             }
         } else {
+            if (_uiState.value.usedLetters.contains(userGuess, ignoreCase = true)){
+                updateGameState(uiState.value.score,uiState.value.lives.minus(1))
+
+            }
 
 
             _uiState.update { currentState ->

@@ -51,10 +51,10 @@ fun GameScreen(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp),
-            onClick = {gameViewModel.startGameState()
+            onClick = {gameViewModel.checkUserGuess()
             }
         ) {
-            Text(stringResource(R.string.start))
+            Text(stringResource(R.string.guess))
         }
         Row(modifier = modifier
             .fillMaxWidth()
