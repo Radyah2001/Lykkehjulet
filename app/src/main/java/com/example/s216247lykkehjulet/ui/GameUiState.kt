@@ -6,11 +6,14 @@ package com.example.s216247lykkehjulet.ui
  */
 data class GameUiState(
     val currentWord: String = "",
+    val concealedWord: String = "",
     val currentCategory: String = "",
+    val usedLetters: String = "",
     val score: Int = 0,
     val lives: Int = 5,
     val lykkehjulValue: String = "",
     val isGuessedWordWrong: Boolean = false,
     val isGuessedLetterWrong: Boolean = false,
-    val isGameOver: Boolean = false
+    val isGameOver: Boolean = false,
+    val isGameLost: Boolean = false
 )

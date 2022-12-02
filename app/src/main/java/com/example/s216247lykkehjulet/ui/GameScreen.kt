@@ -1,19 +1,19 @@
 package com.example.s216247lykkehjulet.ui
 
+import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +44,7 @@ fun GameScreen(
             onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
             userGuess = gameViewModel.userGuess,
             onKeyboardDone = { gameViewModel.checkUserGuess() },
-            currentWord = gameUiState.currentWord,
+            currentWord = gameUiState.concealedWord,
             isGuessWrong = gameUiState.isGuessedLetterWrong
         )
         Button(
@@ -55,6 +55,21 @@ fun GameScreen(
             }
         ) {
             Text(stringResource(R.string.start))
+        }
+        Row(modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .size(30.dp)) {
+            Text(text = "Used letters: " + gameUiState.usedLetters, fontSize = 18.sp)
+            
+        }
+        if (gameUiState.isGameOver){
+            FinalScoreDialog(score = gameUiState.score, onPlayAgain = { gameViewModel.resetGame() })
+            
+        }
+         else if (gameUiState.isGameLost){
+            LossDialog(onPlayAgain = { gameViewModel.resetGame()})
+
         }
 
     }
@@ -116,7 +131,9 @@ fun GameLayout(
         Text(
             text = currentWord,
             fontSize = 45.sp,
-            modifier = modifier.align(Alignment.CenterHorizontally).alpha(1f),
+            modifier = modifier
+                .align(Alignment.CenterHorizontally)
+                .alpha(1f),
 
         )
         OutlinedTextField(
@@ -143,7 +160,76 @@ fun GameLayout(
 
 }
 
+/*
+ * Creates and shows an AlertDialog with final score.
+ */
+@Composable
+private fun FinalScoreDialog(
+    score: Int,
+    onPlayAgain: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val activity = (LocalContext.current as Activity)
 
+    AlertDialog(
+        onDismissRequest = {
+            // Dismiss the dialog when the user clicks outside the dialog or on the back
+            // button. If you want to disable that functionality, simply use an empty
+            // onCloseRequest.
+
+        },
+        title = { Text(stringResource(R.string.congratulations)) },
+        text = { Text(stringResource(R.string.you_scored, score)) },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    activity.finish()
+                }
+            ) {
+                Text(text = stringResource(R.string.exit))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onPlayAgain) {
+                Text(text = stringResource(R.string.play_again))
+            }
+        }
+    )
+}
+
+@Composable
+private fun LossDialog(
+    onPlayAgain: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val activity = (LocalContext.current as Activity)
+
+    AlertDialog(
+        onDismissRequest = {
+            // Dismiss the dialog when the user clicks outside the dialog or on the back
+            // button. If you want to disable that functionality, simply use an empty
+            // onCloseRequest.
+        },
+        title = { Text(stringResource(R.string.you_lost)) },
+        text = { Text(stringResource(R.string.try_again)) },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    activity.finish()
+                }
+            ) {
+                Text(text = stringResource(R.string.exit))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onPlayAgain) {
+                Text(text = stringResource(R.string.play_again))
+            }
+        }
+    )
+}
 
 
 
