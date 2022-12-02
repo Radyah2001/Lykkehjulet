@@ -119,7 +119,7 @@ class GameViewModel : ViewModel() {
             if (_uiState.value.lives == 0){
                 _uiState.update { currentState -> currentState.copy(isGameLost = true) }
             }
-            if (String(chars)==currentWord){
+            if (String(chars).equals(currentWord, ignoreCase = true)){
                 _uiState.update { currentState -> currentState.copy(isGameOver = true) }
             }
 
@@ -149,6 +149,9 @@ class GameViewModel : ViewModel() {
             if (_uiState.value.usedLetters.contains(userGuess, ignoreCase = true)){
                 updateGameState(uiState.value.score,uiState.value.lives.minus(1))
 
+            }
+            if (_uiState.value.lives == 0){
+                _uiState.update { currentState -> currentState.copy(isGameLost = true) }
             }
 
 
