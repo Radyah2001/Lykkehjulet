@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.s216247lykkehjulet.ui.theme.S216247LykkehjuletTheme
 import com.example.s216247lykkehjulet.R
 
-
+// the place where all ui elements are put
 @Composable
 fun GameScreen(
     modifier: Modifier = Modifier,
@@ -198,6 +198,9 @@ private fun FinalScoreDialog(
     )
 }
 
+/*
+ * Creates and shows an AlertDialog when you lose.
+ */
 @Composable
 private fun LossDialog(
     onPlayAgain: () -> Unit,

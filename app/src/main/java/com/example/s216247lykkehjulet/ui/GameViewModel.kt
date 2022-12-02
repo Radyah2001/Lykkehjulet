@@ -21,6 +21,8 @@ class GameViewModel : ViewModel() {
     init {
         resetGame()
     }
+
+    // resets game  with some starting values
     fun resetGame(){
         _uiState.value = GameUiState(
             currentWord = pickRandomWord(),
@@ -35,6 +37,8 @@ class GameViewModel : ViewModel() {
             concealedWord = concealWord(currentWord)
         )
     }
+
+    // conceals word that is written as variable
     private fun concealWord(currentWord: String): String {
         var concealedWord = ""
         val length: Int = currentWord.length
@@ -44,7 +48,7 @@ class GameViewModel : ViewModel() {
 
         return concealedWord
     }
-
+    // assigns variables with starting values
     fun startGameState() {
         // Normal round in the game
         _uiState.update { currentState ->
@@ -64,6 +68,7 @@ class GameViewModel : ViewModel() {
 
         }
     }
+    // changes values of the variables written below
     fun updateGameState(updatedScore: Int, updatedLives: Int){
         _uiState.update {
             currentState->currentState.copy(
@@ -77,11 +82,12 @@ class GameViewModel : ViewModel() {
     fun updateUserGuess(guessedWord: String){
         userGuess = guessedWord
     }
+    // Counts the amount of times a letter is present in the word
     fun countOccurrences(s: String, ch: Char): Int {
         return s.count { it == ch }
     }
 
-
+    // checks if word guessed is correct, else checks if guessed letter is correct, else makes you lose a life
     fun checkUserGuess() {
         if (currentWord.equals(userGuess,ignoreCase = true)){
             _uiState.update { currentState -> currentState.copy(isGameOver = true, score = uiState.value.lykkehjulValue.toInt()*uiState.value.currentWord.length)}
@@ -104,6 +110,7 @@ class GameViewModel : ViewModel() {
 
             _uiState.update { currentState -> currentState.copy(concealedWord = temp2)      }
 
+            //if used letters are used again a life is taken
             if (_uiState.value.usedLetters.contains(userGuess, ignoreCase = true)){
                 updateGameState(uiState.value.score,uiState.value.lives.minus(1))
 
@@ -120,12 +127,13 @@ class GameViewModel : ViewModel() {
 
 
 
-            // User's guess is correct, increase the score
-            // and call updateGameState() to prepare the game for next round
+
+
             if (isSpinnedValueFallit){
                 updateGameState(0, _uiState.value.lives)
             }
             else {
+                // User's guess is correct, increase the score
                 val updatedScore = _uiState.value.score.plus(_uiState.value.lykkehjulValue.toInt() * occurences)
                 updateGameState(updatedScore,uiState.value.lives)
                 if (uiState.value.usedLetters.contains(currentWord, ignoreCase = true))
@@ -136,7 +144,7 @@ class GameViewModel : ViewModel() {
                 _uiState.update { currentState -> currentState.copy(usedLetters = _uiState.value.usedLetters.plus(userGuess)) }
             }
         } else {
-            // User's guess is wrong, show an error
+
 
             _uiState.update { currentState ->
                 currentState.copy(isGuessedWordWrong = true, lives = _uiState.value.lives.minus(1), score = _uiState.value.score, lykkehjulValue = pickRandomValue())
@@ -162,6 +170,7 @@ class GameViewModel : ViewModel() {
     lateinit var lykkehjulValue: String
 
 
+    // Picks word from five categories
     fun pickRandomWord(): String {
         currentCategory = kategorier.random()
         when (currentCategory){
@@ -174,6 +183,7 @@ class GameViewModel : ViewModel() {
         return currentWord
         }
 
+    // picks random value from luckywheel
     fun pickRandomValue(): String {
         lykkehjulValue = lykkehjulet.random()
         isSpinnedValueFallit = lykkehjulValue.equals("fallit", ignoreCase = true)
